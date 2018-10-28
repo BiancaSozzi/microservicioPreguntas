@@ -1,54 +1,43 @@
 <a name="top"></a>
+# Questions Service v0.0.0
 
-# Microservicio de Preguntas
-# Questions Service v0.0.1
+Microservicio de Preguntas
 
--[Preguntas](#preguntas)
-    -[Crear Pregunta](#crear-pregunta)
-    -[Responder Pregunta](#responder-pregunta)
-    -[Buscar Preguntas por Articulo](#buscar-preguntas-por-articulo)
-    -[Buscar Preguntas por usuario](#buscar-preguntas-por-usuario)
-    -[Buscar Pregunta por Id](#buscar-pregunta-por-id)
-    -[Buscar Respuesta por pregunta](#buscar-respuesta-por-pregunta)
-    -[Eliminar Pregunta](#eliminar-pregunta)
-    -[Eliminar Respuesta](#eliminar-respuesta)
+- [Preguntas](#preguntas)
+	- [Obtener preguntas de un artículo](#obtener-preguntas-de-un-artículo)
+	- [Obtener preguntas de un usuario](#obtener-preguntas-de-un-usuario)
+	- [Crear Pregunta](#crear-pregunta)
+	
+- [Respuestas](#respuestas)
+	- [Buscar Respuestas de una pregunta](#buscar-respuestas-de-una-pregunta)
+	- [Crear Respuesta](#crear-respuesta)
+	
 
--[RabbitMQ_GET](#rabbitmq_get)
-    -[Validacion de Articulo](#validación-de-artículos)
-    -[Logout](#logout)
-
--[RabbitMQ_POST](#rabbitmq_post)
-    -[Notificar Respuesta](#notificar-respuesta)
 
 # <a name='preguntas'></a> Preguntas
 
-## <a name='crear-pregunta'></a> Crear Pregunta
+## <a name='obtener-preguntas-de-un-artículo'></a> Obtener preguntas de un artículo
 [Back to top](#top)
 
 
 
-	POST /v1/questions/
+	GET /v1/questions/:articleId
+
 
 
 ### Examples
 
-Body
+Header Autorización
 
-```
-{
-    "question": "{contenido de la pregunta}",
-    "userId": "{User Id}",
-    "articleId":"{articleId}"
-}
-
-```
-
-Header Autorizacion
 ```
 Authorization=bearer {token}
 ```
 
+
 ### Success Response
+
+Respuesta
+
 ```
 HTTP/1.1 200 OK
 {
@@ -60,6 +49,8 @@ HTTP/1.1 200 OK
     "articleId":"{articleId}"
 }
 ```
+
+
 ### Error Response
 
 401 Unauthorized
@@ -92,14 +83,80 @@ HTTP/1.1 500 Server Error
     "error" : "{Motivo del error}"
 }
 ```
-
-## <a name='responder-pregunta'></a> Responder Pregunta
-
+## <a name='obtener-preguntas-de-un-usuario'></a> Obtener preguntas de un usuario
 [Back to top](#top)
 
 
 
-	POST /v1/questions/:questionId/answers
+	GET /v1/questions/:userId
+
+
+
+### Examples
+
+Header Autorización
+
+```
+Authorization=bearer {token}
+```
+
+
+### Success Response
+
+Respuesta
+
+```
+HTTP/1.1 200 OK
+{
+    "_id":"{id de la pregunta}",
+    "question": "{contenido de la pregunta}",
+    "userId": "{User Id}",
+    "created": "{Fecha creada}",
+    "answered": "{si tiene respuesta}",
+    "articleId":"{articleId}"
+}
+```
+
+
+### Error Response
+
+401 Unauthorized
+
+```
+HTTP/1.1 401 Unauthorized
+```
+400 Bad Request
+
+```
+HTTP/1.1 400 Bad Request
+{
+    "path" : "{Nombre de la propiedad}",
+    "message" : "{Motivo del error}"
+}
+```
+400 Bad Request
+
+```
+HTTP/1.1 400 Bad Request
+{
+    "error" : "{Motivo del error}"
+}
+```
+500 Server Error
+
+```
+HTTP/1.1 500 Server Error
+{
+    "error" : "{Motivo del error}"
+}
+```
+## <a name='crear-pregunta'></a> Crear Pregunta
+[Back to top](#top)
+
+
+
+	POST /v1/questions/
+
 
 
 ### Examples
@@ -108,31 +165,34 @@ Body
 
 ```
 {
-    "answer": "{contenido de la respuesta}",
-    "userId": "{User Id}",
-    "articleId":"{articleId}",
-    "questionId":"{pregunta a la que corresponde la respuesta}"
+    "question": "{ contenido de la pregunta }",
+    "articleId": "{ articleId }"
 }
-
 ```
+Header Autorización
 
-Header Autorizacion
 ```
 Authorization=bearer {token}
 ```
 
+
 ### Success Response
+
+Respuesta
+
 ```
 HTTP/1.1 200 OK
 {
-    "_id":"{id de la respuesta}",
-    "answer": "{contenido de la respuesta}",
+    "_id":"{id de la pregunta}",
+    "question": "{contenido de la pregunta}",
     "userId": "{User Id}",
     "created": "{Fecha creada}",
-    "articleId":"{articleId}",
-    "questionId":"{pregunta a la que corresponde la respuesta}"
+    "answered": "{si tiene respuesta}",
+    "articleId":"{articleId}"
 }
 ```
+
+
 ### Error Response
 
 401 Unauthorized
@@ -165,159 +225,24 @@ HTTP/1.1 500 Server Error
     "error" : "{Motivo del error}"
 }
 ```
+# <a name='respuestas'></a> Respuestas
 
-## <a name='buscar-preguntas-por-articulo'></a> Buscar Pregunta por artículo
+## <a name='buscar-respuestas-de-una-pregunta'></a> Buscar Respuestas de una pregunta
 [Back to top](#top)
 
-GET /v1/questions/:articleId
 
-### Success Response
 
-Respuesta
+	GET /v1/questions/:questioId/answers
 
-```
-HTTP/1.1 200 OK
-{
-    "_id": "{id de la pregunta}"
-    "question": "{descripción del articulo}",
-    "userId": "{User Id}",
-    "created": "{Fecha creada}",
-    "answered": "{si tiene respuesta}",
-    "articleId":"{articleId}"
-}
-```
 
-### Error Response
 
-400 Bad Request
+### Examples
+
+Header Autorización
 
 ```
-HTTP/1.1 400 Bad Request
-{
-    "path" : "{Nombre de la propiedad}",
-    "message" : "{Motivo del error}"
-}
+Authorization=bearer {token}
 ```
-400 Bad Request
-
-```
-HTTP/1.1 400 Bad Request
-{
-    "error" : "{Motivo del error}"
-}
-```
-500 Server Error
-
-```
-HTTP/1.1 500 Server Error
-{
-    "error" : "{Motivo del error}"
-}
-```
-
-## <a name='buscar-preguntas-por-usuario'></a> Buscar Pregunta por usuario
-[Back to top](#top)
-
-GET /v1/questions/:userId
-
-
-### Success Response
-
-Respuesta
-
-```
-HTTP/1.1 200 OK
-{
-    "_id": "{id de la pregunta}"
-    "question": "{descripción del articulo}",
-    "userId": "{User Id}",
-    "created": "{Fecha creada}",
-    "answered": "{si tiene respuesta}",
-    "articleId":"{articleId}"
-}
-```
-
-### Error Response
-
-400 Bad Request
-
-```
-HTTP/1.1 400 Bad Request
-{
-    "path" : "{Nombre de la propiedad}",
-    "message" : "{Motivo del error}"
-}
-```
-400 Bad Request
-
-```
-HTTP/1.1 400 Bad Request
-{
-    "error" : "{Motivo del error}"
-}
-```
-500 Server Error
-
-```
-HTTP/1.1 500 Server Error
-{
-    "error" : "{Motivo del error}"
-}
-```
-
-## <a name='buscar-pregunta-por-id'></a> Buscar Pregunta por Id
-[Back to top](#top)
-
-GET /v1/questions/:questionId
-
-
-### Success Response
-
-Respuesta
-
-```
-HTTP/1.1 200 OK
-{
-    "_id": "{id de la pregunta}"
-    "question": "{descripción del articulo}",
-    "userId": "{User Id}",
-    "created": "{Fecha creada}",
-    "answered": "{si tiene respuesta}",
-    "articleId":"{articleId}"
-}
-```
-
-### Error Response
-
-400 Bad Request
-
-```
-HTTP/1.1 400 Bad Request
-{
-    "path" : "{Nombre de la propiedad}",
-    "message" : "{Motivo del error}"
-}
-```
-400 Bad Request
-
-```
-HTTP/1.1 400 Bad Request
-{
-    "error" : "{Motivo del error}"
-}
-```
-500 Server Error
-
-```
-HTTP/1.1 500 Server Error
-{
-    "error" : "{Motivo del error}"
-}
-```
-## <a name='buscar-respuesta-por-pregunta'></a> Buscar Respuesta por Pregunta
-[Back to top](#top)
-
-GET /v1/questions/:questioId/answers
 
 
 ### Success Response
@@ -335,8 +260,14 @@ HTTP/1.1 200 OK
 }
 ```
 
+
 ### Error Response
 
+401 Unauthorized
+
+```
+HTTP/1.1 401 Unauthorized
+```
 400 Bad Request
 
 ```
@@ -362,17 +293,25 @@ HTTP/1.1 500 Server Error
     "error" : "{Motivo del error}"
 }
 ```
-## <a name='eliminar-pregunta'></a> Eliminar Pregunta
+## <a name='crear-respuesta'></a> Crear Respuesta
 [Back to top](#top)
 
 
 
-	DELETE /questions/:questionId
+	POST /v1/questions/:questionId/answers
 
 
 
 ### Examples
 
+Body
+
+```
+{
+    "answer": "{ contenido de la respuesta }",
+    "articleId": "{ articleId }"
+}
+```
 Header Autorización
 
 ```
@@ -382,10 +321,18 @@ Authorization=bearer {token}
 
 ### Success Response
 
-200 Respuesta
+Respuesta
 
 ```
 HTTP/1.1 200 OK
+{
+    "_id":"{id de la respuesta}",
+    "answer": "{contenido de la respuesta}",
+    "userId": "{User Id}",
+    "created": "{Fecha creada}",
+    "articleId":"{articleId}",
+    "questionId":"{pregunta a la que corresponde la respuesta}"     
+}
 ```
 
 
@@ -421,131 +368,3 @@ HTTP/1.1 500 Server Error
     "error" : "{Motivo del error}"
 }
 ```
-## <a name='eliminar-respuesta'></a> Eliminar Respuesta
-[Back to top](#top)
-
-
-
-	DELETE /questions/:questioId/:answerId
-
-
-
-### Examples
-
-Header Autorización
-
-```
-Authorization=bearer {token}
-```
-
-
-### Success Response
-
-200 Respuesta
-
-```
-HTTP/1.1 200 OK
-```
-
-
-### Error Response
-
-401 Unauthorized
-
-```
-HTTP/1.1 401 Unauthorized
-```
-400 Bad Request
-
-```
-HTTP/1.1 400 Bad Request
-{
-    "path" : "{Nombre de la propiedad}",
-    "message" : "{Motivo del error}"
-}
-```
-400 Bad Request
-
-```
-HTTP/1.1 400 Bad Request
-{
-    "error" : "{Motivo del error}"
-}
-```
-500 Server Error
-
-```
-HTTP/1.1 500 Server Error
-{
-    "error" : "{Motivo del error}"
-}
-```
-
-# <a name='rabbitmq_get'></a> RabbitMQ_GET
-
-## <a name='validación-de-articulos'></a> Validación de Articulos
-[Back to top](#top)
-
-<p>Escucha de mensajes article-exist desde cart. Valida articulos</p>
-
-	DIRECT catalog/article-exist
-
-
-
-### Examples
-
-Mensaje
-
-```
-{
-  "type": "article-exist",
-  "exchange" : "{Exchange name to reply}"
-  "queue" : "{Queue name to reply}"
-  "message" : {
-      "referenceId": "{referenceId}",
-      "articleId": "{articleId}",
-  }
-```
-## <a name='logout'></a> Logout
-[Back to top](#top)
-
-<p>Escucha de mensajes logout desde auth. Invalida sesiones en cache.</p>
-
-	FANOUT auth/logout
-
-
-
-### Examples
-Mensaje
-
-```
-{
-   "type": "logout",
-   "message": "{tokenId}"
-}
-```
-
-
-# <a name='rabbitmq_post'></a> RabbitMQ_POST
-
-## <a name='notificar-respuesta'></a> Notificar Respuesta
-[Back to top](#top)
-
-<p>Notifica Respuesta de preguntas</p>
-
-DIRECT mail/question-answered
-
-### Success Response
-
-Mensaje
-
-```
-{
-    "type":"question-answered",
-    "message":{
-        "userQuestionEmail": {mail from who asked the question},
-        "userAnswerEmail": {mail from who answered the question},
-        "questio":"{question}", 
-        "answer":"{answer}",
-    }
-}
