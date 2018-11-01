@@ -8,6 +8,9 @@ Microservicio de Preguntas
 	- [Obtener preguntas de un usuario](#obtener-preguntas-de-un-usuario)
 	- [Crear Pregunta](#crear-pregunta)
 	
+- [RabbitMQ_GET](#rabbitmq_get)
+	- [Logout](#logout)
+	
 - [Respuestas](#respuestas)
 	- [Buscar Respuestas de una pregunta](#buscar-respuestas-de-una-pregunta)
 	- [Crear Respuesta](#crear-respuesta)
@@ -225,6 +228,31 @@ HTTP/1.1 500 Server Error
     "error" : "{Motivo del error}"
 }
 ```
+# <a name='rabbitmq_get'></a> RabbitMQ_GET
+
+## <a name='logout'></a> Logout
+[Back to top](#top)
+
+<p>Escucha de mensajes logout desde auth. Invalida sesiones en cache.</p>
+
+	FANOUT auth/logout
+
+
+
+### Examples
+
+Mensaje
+
+```
+{
+  "type": "fanout",
+  "message" : "tokenId"
+}
+```
+
+
+
+
 # <a name='respuestas'></a> Respuestas
 
 ## <a name='buscar-respuestas-de-una-pregunta'></a> Buscar Respuestas de una pregunta

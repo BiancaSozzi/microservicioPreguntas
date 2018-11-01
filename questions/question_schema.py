@@ -6,6 +6,7 @@ import socket
 import http.client
 import utils.config as config
 import utils.json_serializer as json
+import questions.answer_schema as answer
 
 QUESTION_DB_SCHEMA = {
     "question": {
@@ -13,7 +14,12 @@ QUESTION_DB_SCHEMA = {
         "type": str,
         "minLen": 1,
         "maxLen": 500,
+    },
+    "answer":{
+        "required":False,
+        "type": answer,
     }
+
 }
 
 def newQuestion(authKey, params):
@@ -35,4 +41,5 @@ def newQuestion(authKey, params):
         "created": datetime.datetime.utcnow(),
         "answered": False,
         "articleId": params['articleId'],
+        "answer": None
     }

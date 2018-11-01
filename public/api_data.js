@@ -183,6 +183,24 @@ define({ "api": [
     }
   },
   {
+    "type": "fanout",
+    "url": "auth/logout",
+    "title": "Logout",
+    "group": "RabbitMQ_GET",
+    "description": "<p>Escucha de mensajes logout desde auth. Invalida sesiones en cache.</p>",
+    "examples": [
+      {
+        "title": "Mensaje",
+        "content": "{\n  \"type\": \"fanout\",\n  \"message\" : \"tokenId\"\n}",
+        "type": "json"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "./rabbit/rabbit_service.py",
+    "groupTitle": "RabbitMQ_GET",
+    "name": "FanoutAuthLogout"
+  },
+  {
     "type": "get",
     "url": "/v1/questions/:questioId/answers",
     "title": "Buscar Respuestas de una pregunta",

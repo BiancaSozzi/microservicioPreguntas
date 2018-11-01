@@ -2,6 +2,7 @@ import utils.mongo as db
 import utils.errors as error
 import bson.objectid as bson
 from bson.json_util import dumps
+import utils.json_serializer as json
 import datetime
 import questions.question_schema as question_schema
 import questions.answer_schema as answer_schema
@@ -70,7 +71,8 @@ def addAnswer(params, questionId, token):
             "userId": "{User Id}",
             "created": "{Fecha creada}",
             "articleId":"{articleId}",
-            "questionId":"{pregunta a la que corresponde la respuesta}"     
+            "questionId":"{pregunta a la que corresponde la respuesta}"
+            "answer": "{respuesta - null cuando se crea}"     
         }
 
     @apiUse Errors
@@ -78,7 +80,7 @@ def addAnswer(params, questionId, token):
     """
     answer = answer_schema.newAnswer(token, params, questionId)
     answer["_id"] = db.answers.insert_one(answer).inserted_id
-    result = setQuestionAnswered(questionId)
+    result = setQuestionAnswered(answer)
     return answer
 
 def getQuestionByArticle(articleId):
@@ -103,6 +105,7 @@ def getQuestionByArticle(articleId):
             "created": "{Fecha creada}",
             "answered": "{si tiene respuesta}",
             "articleId":"{articleId}"
+            "answer": "{respuesta - si answered es true}"
         }
 
     @apiUse Errors
@@ -137,7 +140,8 @@ def getQuestionByUser(userId):
             "userId": "{User Id}",
             "created": "{Fecha creada}",
             "answered": "{si tiene respuesta}",
-            "articleId":"{articleId}"
+            "articleId":"{articleId}",
+            "answer":"{respuesta - if answered es true}"
         }
 
     @apiUse Errors
@@ -151,9 +155,9 @@ def getQuestionByUser(userId):
     except Exception:
         raise error.InvalidArgument("userId","Invalid object id")
 
-def setQuestionAnswered(questionId):
+def setQuestionAnswered(answer):
     try:
-        result = dumps(db.questions.find_one_and_update( {"_id": bson.ObjectId(questionId)}, { '$set': { "answered" : True } },))
+        result = dumps(db.questions.find_one_and_update( {"_id": bson.ObjectId(answer['questionId'])}, { '$set': { "answered" : True, "answer":answer }} ))
         if (not result):
             raise error.InvalidArgument("_id", "Document does not exists")
         return result
