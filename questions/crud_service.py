@@ -6,6 +6,9 @@ import utils.json_serializer as json
 import datetime
 import questions.question_schema as question_schema
 import questions.answer_schema as answer_schema
+import http.client
+import socket
+import utils.errors as errors
 
 def addQuestion(params, token):
     """
@@ -40,10 +43,22 @@ def addQuestion(params, token):
     @apiUse Errors
 
     """
-    question = question_schema.newQuestion(token, params)
-    question["_id"] = db.questions.insert_one(question).inserted_id
-    return question
-
+    conn = http.client.HTTPConnection(
+        socket.gethostbyname("localhost"),
+        3002,
+    )
+    #5bdd902969a2bb15b80ef957
+    #5bdd93e169a2bb15b80ef958
+    headers = {"Authorization".encode("utf-8"): token.encode("utf-8")}
+    conn.request("GET", "/v1/articles/" + params['articleId'], {}, headers)
+    response = conn.getresponse()
+    if response.status != 200:
+        raise errors.NotFound()
+    else:
+        question = question_schema.newQuestion(token, params)
+        question["_id"] = db.questions.insert_one(question).inserted_id
+        return question
+   
 def addAnswer(params, questionId, token):
     """
     Responde una pregunta - Crea una respuesta.\n
@@ -112,7 +127,7 @@ def getQuestionByArticle(articleId):
 
     """
     try:
-        result = dumps(db.questions.find({"articleId": int(articleId)}))
+        result = dumps(db.questions.find({"articleId": str(articleId)}))
         if (not result):
             raise error.InvalidArgument("articleId", "Document does not exists")
         return result

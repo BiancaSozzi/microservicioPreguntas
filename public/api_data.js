@@ -37,7 +37,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Respuesta",
-          "content": "HTTP/1.1 200 OK\n{\n    \"_id\":\"{id de la pregunta}\",\n    \"question\": \"{contenido de la pregunta}\",\n    \"userId\": \"{User Id}\",\n    \"created\": \"{Fecha creada}\",\n    \"answered\": \"{si tiene respuesta}\",\n    \"articleId\":\"{articleId}\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n    \"_id\":\"{id de la pregunta}\",\n    \"question\": \"{contenido de la pregunta}\",\n    \"userId\": \"{User Id}\",\n    \"created\": \"{Fecha creada}\",\n    \"answered\": \"{si tiene respuesta}\",\n    \"articleId\":\"{articleId}\"\n    \"answer\": \"{respuesta - si answered es true}\"\n}",
           "type": "json"
         }
       ]
@@ -87,7 +87,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Respuesta",
-          "content": "HTTP/1.1 200 OK\n{\n    \"_id\":\"{id de la pregunta}\",\n    \"question\": \"{contenido de la pregunta}\",\n    \"userId\": \"{User Id}\",\n    \"created\": \"{Fecha creada}\",\n    \"answered\": \"{si tiene respuesta}\",\n    \"articleId\":\"{articleId}\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n    \"_id\":\"{id de la pregunta}\",\n    \"question\": \"{contenido de la pregunta}\",\n    \"userId\": \"{User Id}\",\n    \"created\": \"{Fecha creada}\",\n    \"answered\": \"{si tiene respuesta}\",\n    \"articleId\":\"{articleId}\",\n    \"answer\":\"{respuesta - if answered es true}\"\n}",
           "type": "json"
         }
       ]
@@ -272,7 +272,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Respuesta",
-          "content": "HTTP/1.1 200 OK\n{\n    \"_id\":\"{id de la respuesta}\",\n    \"answer\": \"{contenido de la respuesta}\",\n    \"userId\": \"{User Id}\",\n    \"created\": \"{Fecha creada}\",\n    \"articleId\":\"{articleId}\",\n    \"questionId\":\"{pregunta a la que corresponde la respuesta}\"     \n}",
+          "content": "HTTP/1.1 200 OK\n{\n    \"_id\":\"{id de la respuesta}\",\n    \"answer\": \"{contenido de la respuesta}\",\n    \"userId\": \"{User Id}\",\n    \"created\": \"{Fecha creada}\",\n    \"articleId\":\"{articleId}\",\n    \"questionId\":\"{pregunta a la que corresponde la respuesta}\"\n    \"answer\": \"{respuesta - null cuando se crea}\"     \n}",
           "type": "json"
         }
       ]

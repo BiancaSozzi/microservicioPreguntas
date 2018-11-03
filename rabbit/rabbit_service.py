@@ -19,32 +19,46 @@ EVENT = {
     }
 }
 
+MSG_QUESTION_ANSWERED = {
+    "userQuestionId": {
+        "required": True,
+        "type": str
+    },
+    "userAnsweredId": {
+        "required": True,
+        "type": str
+    },
+    "question": {
+        "required": True,
+        "type": str
+    },
+    "answer": {
+        "required": True,
+        "type": str
+    }
+
+}
+
 def init():
     """ 
     Inicializar los servicios de rabbit
     """
     initAuth()
-    initCatalog()
-    initQuestions()
+    # initQuestions()
 
 def initAuth():
     """
     Inicializar Rabbit para escuchar los eventos de logout.
     """
+    print("Init Auth")
     authConsumer = threading.Thread(target=listenAuth)
     authConsumer.start()
-
-def initCatalog():
-    """
-    Inicializar rabbit para escuchar los eventos de Catalog. (Article Exists)
-    """
-    catalogConsumer = threading.Thread(target=listenCatalog)
-    catalogConsumer.start()
 
 def initQuestions():
     """
     Inicializar rabbit para escuchar eventos especificos de questions.
     """
+    print("Init questions")
     questionsConsumer = threading.Thread(target=listenQuestions)
     questionsConsumer.start()
 
@@ -69,7 +83,7 @@ def listenAuth():
 
     try:
         connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host = config.get_rabbit_server_url)
+            pika.ConnectionParameters(host = config.get_rabbit_server_url())
         )
         channel = connection.channel()
 
@@ -108,17 +122,12 @@ def listenAuth():
         print("RabbitMQ Auth desconectado... Reintentando en 10 segundos")
         threading.Timer(10.0, initAuth).start()
 
-def listenCatalog():
-    """
-    article-exists: Consume article exists de Catalog para validar el articulo
-    """
-    pass
-
 def listenQuestions():
     """
     Envía eventos a notificaciones. Notifica que se ha respondido una
     pregunta para que se envie la información al usuario que realizó la pregunta.
     """
+    
     
 
 

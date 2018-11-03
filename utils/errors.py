@@ -21,6 +21,12 @@
     {
         "error" : "{Motivo del error}"
     }
+
+@apiErrorExample 404 Not Found
+    HTTP/1.1 404 Not Found
+    {
+        "error": "{Motivo del error}"
+    }
 """
 import traceback
 import utils.json_serializer as json
@@ -58,6 +64,9 @@ class InvalidAuth(Exception):
 class InvalidAccessLevel(Exception):
     pass
 
+class NotFound(Exception):
+    pass
+
 
 def handleError(err):
     """
@@ -75,6 +84,8 @@ def handleError(err):
         return handleUnauthorized(err)
     elif isinstance(err, InvalidAccessLevel):
         return handleInvalidAccessLevel(err)
+    elif isinstance(err, NotFound):
+        return handleNotFound(err)
     else:
         traceback.print_exc()
         return handleUnknown(err)
@@ -132,3 +143,12 @@ def handleInvalidAccessLevel(err):
     result json error a enviar al cliente
     """
     return json.dic_to_json({"error": "Insufficient access level"}), 401
+
+
+def handleNotFound(err):
+    """
+    Elemento no encontrado
+    err: Not Found
+    result json error a enviar al cliente
+    """
+    return json.dic_to_json({"errors":"Element doesn't exist"}),404

@@ -38,7 +38,7 @@ def newQuestion(authKey, params):
     return {
         "question": params['question'],
         "userId":result['id'],
-        "created": datetime.datetime.utcnow(),
+        "created": datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S'),
         "answered": False,
         "articleId": params['articleId'],
         "answer": None

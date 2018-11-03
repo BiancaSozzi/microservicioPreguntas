@@ -18,6 +18,7 @@ def init(app):
     @app.route('/v1/questions', methods=['POST'])
     def addQuestion():
         # Solo puede realizar una pregunta un usuario loggeado
+        
         try:
             token = flask.request.headers.get("Authorization")
             security.isValidToken(token)

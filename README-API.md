@@ -50,6 +50,7 @@ HTTP/1.1 200 OK
     "created": "{Fecha creada}",
     "answered": "{si tiene respuesta}",
     "articleId":"{articleId}"
+    "answer": "{respuesta - si answered es true}"
 }
 ```
 
@@ -116,7 +117,8 @@ HTTP/1.1 200 OK
     "userId": "{User Id}",
     "created": "{Fecha creada}",
     "answered": "{si tiene respuesta}",
-    "articleId":"{articleId}"
+    "articleId":"{articleId}",
+    "answer":"{respuesta - if answered es true}"
 }
 ```
 
@@ -359,7 +361,8 @@ HTTP/1.1 200 OK
     "userId": "{User Id}",
     "created": "{Fecha creada}",
     "articleId":"{articleId}",
-    "questionId":"{pregunta a la que corresponde la respuesta}"     
+    "questionId":"{pregunta a la que corresponde la respuesta}"
+    "answer": "{respuesta - null cuando se crea}"     
 }
 ```
 

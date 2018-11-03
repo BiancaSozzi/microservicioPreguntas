@@ -32,7 +32,7 @@ def newAnswer(authKey, params, questionId):
     return {
         "answer": params['answer'],
         "userId":result['id'],
-        "created": datetime.datetime.utcnow(),
+        "created": datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),
         "articleId": params['articleId'],
         "questionId": questionId
     }

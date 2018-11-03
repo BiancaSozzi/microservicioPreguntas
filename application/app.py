@@ -11,9 +11,9 @@ class MainApp:
         CORS(self.flask_app, support_credentials=True, automatic_options = True)
         print("hola")
         self._init_routes()
-        # self._init_rabbit()
+        self._init_rabbit()
         self._init_questions()
-        # self._init_api_doc()
+        
 
     def _init_routes(self):
         @self.flask_app.route('/<path:path>')
@@ -25,12 +25,10 @@ class MainApp:
             return flask.send_from_directory('../public',"index.html")
         
     def _init_rabbit(self):
-        # rabbitService.init()
-        pass
+        rabbitService.init()
 
     def _init_questions(self):
         questionsRoutes.init(self.flask_app)
-        pass
     
     def get_flask_app(self):
         return self.flask_app
