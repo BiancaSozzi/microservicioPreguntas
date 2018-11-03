@@ -16,8 +16,8 @@ QUESTION_DB_SCHEMA = {
     }
 }
 
-def newAnswer(authKey, params, questionId):
-
+def newAnswer(authKey, params, question):
+    
     conn = http.client.HTTPConnection(
         socket.gethostbyname(config.get_security_server_url()),
         config.get_security_server_port(),
@@ -33,6 +33,6 @@ def newAnswer(authKey, params, questionId):
         "answer": params['answer'],
         "userId":result['id'],
         "created": datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),
-        "articleId": params['articleId'],
-        "questionId": questionId
+        "articleId": question['articleId'],
+        "questionId": question['_id']['$oid']
     }

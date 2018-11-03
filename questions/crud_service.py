@@ -9,6 +9,7 @@ import questions.answer_schema as answer_schema
 import http.client
 import socket
 import utils.errors as errors
+from rabbit.rabbit_service import sendQuestionAnswered
 
 def addQuestion(params, token):
     """
@@ -75,7 +76,6 @@ def addAnswer(params, questionId, token):
     @apiExample {json} Body
         {
             "answer": "{ contenido de la respuesta }",
-            "articleId": "{ articleId }"
         }
 
     @apiSuccessExample {json} Respuesta
@@ -93,9 +93,14 @@ def addAnswer(params, questionId, token):
     @apiUse Errors
 
     """
-    answer = answer_schema.newAnswer(token, params, questionId)
-    answer["_id"] = db.answers.insert_one(answer).inserted_id
-    result = setQuestionAnswered(answer)
+    question = json.body_to_dic(dumps(db.questions.find_one({"_id": bson.ObjectId(questionId)})))
+    if question['answered']:
+        raise errors.InvalidRequest("question already answered")
+    else:
+        answer = answer_schema.newAnswer(token, params, question)
+        answer["_id"] = db.answers.insert_one(answer).inserted_id
+        setQuestionAnswered(answer)
+        sendQuestionAnswered("questions","questions", question['userId'], answer['userId'], question['question'], answer['answer'])
     return answer
 
 def getQuestionByArticle(articleId):
