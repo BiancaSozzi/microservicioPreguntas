@@ -117,6 +117,27 @@ def sendQuestionAnswered(exchange, queue, userQuestionId, userAnswerId, question
     Envía eventos a notificaciones. Notifica que se ha respondido una
     pregunta para que se envie la información al usuario que realizó la pregunta.
     """
+
+    """
+    Envia eventos de respuestas contestadas
+    
+    @api {fanout} notifications/question-data Notificar pregunta contestada
+
+    @apiGroup RabbitMQ POST
+
+    @apiDescription Notifica al servicio de notificaciones cuando una pregunta ha sido contestada
+
+    @apiExample {json} Mensaje
+      {
+        "type": "fanout",
+        "message" : {
+            "userQuestionId" : "{id del usuario que realizó la pregunta}",
+            "userAnswerId": "{id del usuario que contestó la pregunta}",
+            "question": "{pregunta realizada}"
+            "answer": "{respuesta}"
+        }
+      }
+    """
     connection = pika.BlockingConnection(pika.ConnectionParameters(host=config.get_rabbit_server_url()))
     channel = connection.channel()
 

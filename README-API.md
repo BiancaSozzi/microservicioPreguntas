@@ -11,6 +11,9 @@ Microservicio de Preguntas
 - [RabbitMQ_GET](#rabbitmq_get)
 	- [Logout](#logout)
 	
+- [RabbitMQ_POST](#rabbitmq_post)
+	- [Notificar pregunta contestada](#notificar-pregunta-contestada)
+	
 - [Respuestas](#respuestas)
 	- [Buscar Respuestas de una pregunta](#buscar-respuestas-de-una-pregunta)
 	- [Crear Respuesta](#crear-respuesta)
@@ -50,7 +53,7 @@ HTTP/1.1 200 OK
     "created": "{Fecha creada}",
     "answered": "{si tiene respuesta}",
     "articleId":"{articleId}"
-    "answer": "{respuesta - si answered es true}"
+    "answer": "{respuesta - si tiene}"
 }
 ```
 
@@ -85,6 +88,14 @@ HTTP/1.1 400 Bad Request
 HTTP/1.1 500 Server Error
 {
     "error" : "{Motivo del error}"
+}
+```
+404 Not Found
+
+```
+HTTP/1.1 404 Not Found
+{
+    "error": "{Motivo del error}"
 }
 ```
 ## <a name='obtener-preguntas-de-un-usuario'></a> Obtener preguntas de un usuario
@@ -118,7 +129,7 @@ HTTP/1.1 200 OK
     "created": "{Fecha creada}",
     "answered": "{si tiene respuesta}",
     "articleId":"{articleId}",
-    "answer":"{respuesta - if answered es true}"
+    "answer":"{respuesta - si tiene respuesta}"
 }
 ```
 
@@ -153,6 +164,14 @@ HTTP/1.1 400 Bad Request
 HTTP/1.1 500 Server Error
 {
     "error" : "{Motivo del error}"
+}
+```
+404 Not Found
+
+```
+HTTP/1.1 404 Not Found
+{
+    "error": "{Motivo del error}"
 }
 ```
 ## <a name='crear-pregunta'></a> Crear Pregunta
@@ -230,6 +249,14 @@ HTTP/1.1 500 Server Error
     "error" : "{Motivo del error}"
 }
 ```
+404 Not Found
+
+```
+HTTP/1.1 404 Not Found
+{
+    "error": "{Motivo del error}"
+}
+```
 # <a name='rabbitmq_get'></a> RabbitMQ_GET
 
 ## <a name='logout'></a> Logout
@@ -249,6 +276,36 @@ Mensaje
 {
   "type": "fanout",
   "message" : "tokenId"
+}
+```
+
+
+
+
+# <a name='rabbitmq_post'></a> RabbitMQ_POST
+
+## <a name='notificar-pregunta-contestada'></a> Notificar pregunta contestada
+[Back to top](#top)
+
+<p>Notifica al servicio de notificaciones cuando una pregunta ha sido contestada</p>
+
+	FANOUT notifications/question-data
+
+
+
+### Examples
+
+Mensaje
+
+```
+{
+  "type": "fanout",
+  "message" : {
+      "userQuestionId" : "{id del usuario que realizó la pregunta}",
+      "userAnswerId": "{id del usuario que contestó la pregunta}",
+      "question": "{pregunta realizada}"
+      "answer": "{respuesta}"
+  }
 }
 ```
 
@@ -323,6 +380,14 @@ HTTP/1.1 500 Server Error
     "error" : "{Motivo del error}"
 }
 ```
+404 Not Found
+
+```
+HTTP/1.1 404 Not Found
+{
+    "error": "{Motivo del error}"
+}
+```
 ## <a name='crear-respuesta'></a> Crear Respuesta
 [Back to top](#top)
 
@@ -339,7 +404,6 @@ Body
 ```
 {
     "answer": "{ contenido de la respuesta }",
-    "articleId": "{ articleId }"
 }
 ```
 Header Autorización
@@ -397,5 +461,13 @@ HTTP/1.1 400 Bad Request
 HTTP/1.1 500 Server Error
 {
     "error" : "{Motivo del error}"
+}
+```
+404 Not Found
+
+```
+HTTP/1.1 404 Not Found
+{
+    "error": "{Motivo del error}"
 }
 ```

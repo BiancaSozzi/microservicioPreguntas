@@ -125,7 +125,7 @@ def getQuestionByArticle(articleId):
             "created": "{Fecha creada}",
             "answered": "{si tiene respuesta}",
             "articleId":"{articleId}"
-            "answer": "{respuesta - si answered es true}"
+            "answer": "{respuesta - si tiene}"
         }
 
     @apiUse Errors
@@ -161,7 +161,7 @@ def getQuestionByUser(userId):
             "created": "{Fecha creada}",
             "answered": "{si tiene respuesta}",
             "articleId":"{articleId}",
-            "answer":"{respuesta - if answered es true}"
+            "answer":"{respuesta - si tiene respuesta}"
         }
 
     @apiUse Errors

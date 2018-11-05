@@ -37,7 +37,7 @@
       "examples": [
         {
           "title": "Respuesta",
-          "content": "HTTP/1.1 200 OK\n{\n    \"_id\":\"{id de la pregunta}\",\n    \"question\": \"{contenido de la pregunta}\",\n    \"userId\": \"{User Id}\",\n    \"created\": \"{Fecha creada}\",\n    \"answered\": \"{si tiene respuesta}\",\n    \"articleId\":\"{articleId}\"\n    \"answer\": \"{respuesta - si answered es true}\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n    \"_id\":\"{id de la pregunta}\",\n    \"question\": \"{contenido de la pregunta}\",\n    \"userId\": \"{User Id}\",\n    \"created\": \"{Fecha creada}\",\n    \"answered\": \"{si tiene respuesta}\",\n    \"articleId\":\"{articleId}\"\n    \"answer\": \"{respuesta - si tiene}\"\n}",
           "type": "json"
         }
       ]
@@ -72,6 +72,11 @@
         {
           "title": "500 Server Error",
           "content": "HTTP/1.1 500 Server Error\n{\n    \"error\" : \"{Motivo del error}\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "404 Not Found",
+          "content": "HTTP/1.1 404 Not Found\n{\n    \"error\": \"{Motivo del error}\"\n}",
           "type": "json"
         }
       ]
@@ -87,7 +92,7 @@
       "examples": [
         {
           "title": "Respuesta",
-          "content": "HTTP/1.1 200 OK\n{\n    \"_id\":\"{id de la pregunta}\",\n    \"question\": \"{contenido de la pregunta}\",\n    \"userId\": \"{User Id}\",\n    \"created\": \"{Fecha creada}\",\n    \"answered\": \"{si tiene respuesta}\",\n    \"articleId\":\"{articleId}\",\n    \"answer\":\"{respuesta - if answered es true}\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n    \"_id\":\"{id de la pregunta}\",\n    \"question\": \"{contenido de la pregunta}\",\n    \"userId\": \"{User Id}\",\n    \"created\": \"{Fecha creada}\",\n    \"answered\": \"{si tiene respuesta}\",\n    \"articleId\":\"{articleId}\",\n    \"answer\":\"{respuesta - si tiene respuesta}\"\n}",
           "type": "json"
         }
       ]
@@ -122,6 +127,11 @@
         {
           "title": "500 Server Error",
           "content": "HTTP/1.1 500 Server Error\n{\n    \"error\" : \"{Motivo del error}\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "404 Not Found",
+          "content": "HTTP/1.1 404 Not Found\n{\n    \"error\": \"{Motivo del error}\"\n}",
           "type": "json"
         }
       ]
@@ -178,6 +188,11 @@
           "title": "500 Server Error",
           "content": "HTTP/1.1 500 Server Error\n{\n    \"error\" : \"{Motivo del error}\"\n}",
           "type": "json"
+        },
+        {
+          "title": "404 Not Found",
+          "content": "HTTP/1.1 404 Not Found\n{\n    \"error\": \"{Motivo del error}\"\n}",
+          "type": "json"
         }
       ]
     }
@@ -199,6 +214,24 @@
     "filename": "./rabbit/rabbit_service.py",
     "groupTitle": "RabbitMQ_GET",
     "name": "FanoutAuthLogout"
+  },
+  {
+    "type": "fanout",
+    "url": "notifications/question-data",
+    "title": "Notificar pregunta contestada",
+    "group": "RabbitMQ_POST",
+    "description": "<p>Notifica al servicio de notificaciones cuando una pregunta ha sido contestada</p>",
+    "examples": [
+      {
+        "title": "Mensaje",
+        "content": "{\n  \"type\": \"fanout\",\n  \"message\" : {\n      \"userQuestionId\" : \"{id del usuario que realizó la pregunta}\",\n      \"userAnswerId\": \"{id del usuario que contestó la pregunta}\",\n      \"question\": \"{pregunta realizada}\"\n      \"answer\": \"{respuesta}\"\n  }\n}",
+        "type": "json"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "./rabbit/rabbit_service.py",
+    "groupTitle": "RabbitMQ_POST",
+    "name": "FanoutNotificationsQuestionData"
   },
   {
     "type": "get",
@@ -246,6 +279,11 @@
           "title": "500 Server Error",
           "content": "HTTP/1.1 500 Server Error\n{\n    \"error\" : \"{Motivo del error}\"\n}",
           "type": "json"
+        },
+        {
+          "title": "404 Not Found",
+          "content": "HTTP/1.1 404 Not Found\n{\n    \"error\": \"{Motivo del error}\"\n}",
+          "type": "json"
         }
       ]
     }
@@ -259,7 +297,7 @@
     "examples": [
       {
         "title": "Body",
-        "content": "{\n    \"answer\": \"{ contenido de la respuesta }\",\n    \"articleId\": \"{ articleId }\"\n}",
+        "content": "{\n    \"answer\": \"{ contenido de la respuesta }\",\n}",
         "type": "json"
       },
       {
@@ -300,6 +338,11 @@
         {
           "title": "500 Server Error",
           "content": "HTTP/1.1 500 Server Error\n{\n    \"error\" : \"{Motivo del error}\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "404 Not Found",
+          "content": "HTTP/1.1 404 Not Found\n{\n    \"error\": \"{Motivo del error}\"\n}",
           "type": "json"
         }
       ]

@@ -9,7 +9,6 @@ class MainApp:
     def __init__(self):
         self.flask_app = flask.Flask(__name__,static_folder = '../public')
         CORS(self.flask_app, support_credentials=True, automatic_options = True)
-        print("hola")
         self._init_routes()
         self._init_rabbit()
         self._init_questions()
@@ -34,6 +33,5 @@ class MainApp:
         return self.flask_app
     
     def start(self):
-        print("starts")
         self.flask_app.run(port=config.get_server_port(), debug=True)
     
